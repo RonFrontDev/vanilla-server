@@ -1,1 +1,1 @@
-alert("connection");
+// alert("we have connection");

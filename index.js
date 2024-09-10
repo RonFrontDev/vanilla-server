@@ -6,6 +6,28 @@ import { fileURLToPath } from "url";
 const port = 4000;
 const root = path.dirname(fileURLToPath(import.meta.url));
 
+const getContentType = (filePath) => {
+  const extname = path.extname(filePath);
+
+  // Determine the content type based on the file extension
+  switch (extname) {
+    case ".html":
+      return "text/html";
+    case ".js":
+      return "application/javascript";
+    case ".css":
+      return "text/css";
+    case ".png":
+      return "image/png";
+    case ".jpg":
+      return "image/jpeg";
+    case ".ico":
+      return "image/x-icon";
+    default:
+      return "application/octet-stream"; // Default for other files
+  }
+};
+
 const server = http.createServer((req, res) => {
   console.log(req.url);
 
@@ -20,18 +42,15 @@ const server = http.createServer((req, res) => {
     filePath = path.join(filePath, "index.html");
   }
 
-  // If no file extension is provided, assume it's an HTML file
-  if (!path.extname(filePath)) {
-    filePath += ".html";
-  }
-
   // Read and serve the file
   fs.readFile(filePath, (error, data) => {
     if (error) {
       res.writeHead(404, { "Content-Type": "text/plain" });
       res.write("Error: file not found");
     } else {
-      res.writeHead(200, { "Content-Type": "text/html" });
+      // Determine the content type based on file extension
+      const contentType = getContentType(filePath);
+      res.writeHead(200, { "Content-Type": contentType });
       res.write(data);
     }
     res.end();
