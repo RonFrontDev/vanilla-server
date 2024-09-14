@@ -13,7 +13,7 @@ apiSelect.addEventListener("change", function () {
 
 async function getData(selectedKey) {
   try {
-    const response = await fetch("http://localhost:4000/api");
+    const response = await fetch("/api");
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
@@ -47,7 +47,7 @@ async function getData(selectedKey) {
 // Populate the select options with keys from the object and "All data" option
 async function populateSelectOptions() {
   try {
-    const response = await fetch("http://localhost:4000/api");
+    const response = await fetch("/api");
     const data = await response.json();
 
     if (data.length > 0) {
